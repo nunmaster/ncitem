@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Item Cost Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        p, select, input {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        input, select, button {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+            background-color: #e9e9e9;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .results span {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+    <script>
+        function calculateCost() {
+            // Get the number of diamonds and THB input by the user to calculate the rate
+            var diamondsInput = document.getElementById('diamondsInput').value;
+            var thbInput = document.getElementById('thbInput').value;
+            var diamondsPerUSD = (thbInput / diamondsInput) * 0.02857; // Calculate USD per diamond using THB to USD rate
+
+            // Prices and diamond requirements for each item
+            var itemData = {
+                'MORION (5.85 USD)': { 'diamonds': 110, 'tokenPrice': 5.85 },
+                'PAPYRUS (22.78 USD)': { 'diamonds': 419, 'tokenPrice': 22.78 },
+                'PROMOTE (104.48 USD)': { 'diamonds': 21500, 'tokenPrice': 104.48 }
+            };
+
+            // Get the selected item
+            var selectedItem = document.getElementById('itemList').value;
+
+            // Get the data for the selected item
+            var itemInfo = itemData[selectedItem];
+
+            // Calculate costs
+            var costInDiamondsUSD = itemInfo.diamonds * diamondsPerUSD;
+            var costInTokensUSD = itemInfo.tokenPrice;
+
+            // Display the results
+            document.getElementById('costInDiamonds').textContent = costInDiamondsUSD.toFixed(2) + ' USD';
+            document.getElementById('costInTokens').textContent = costInTokensUSD.toFixed(2) + ' USD';
+            document.getElementById('cheaperMethod').textContent = costInDiamondsUSD < costInTokensUSD ? 'Diamonds' : 'Tokens';
+        }
+    </script>
+</head>
+<body>
+    <h1>Item Cost Calculator</h1>
+    <p>Diamonds (for rate calculation): <input type="number" id="diamondsInput" placeholder="e.g., 10000"></p>
+    <p>THB (for rate calculation): <input type="number" id="thbInput" placeholder="e.g., 2500"></p>
+    <p>Select Item: 
+        <select id="itemList">
+            <option value="MORION (5.85 USD)">MORION (5.85 USD)</option>
+            <option value="PAPYRUS (22.78 USD)">PAPYRUS (22.78 USD)</option>
+            <option value="PROMOTE (104.48 USD)">PROMOTE (104.48 USD)</option>
+        </select>
+    </p>
+    <button onclick="calculateCost()">Calculate</button>
+    <div class="results">
+        <h2>Results:</h2>
+        <p>Cost in Diamonds: <span id="costInDiamonds"></span></p>
+        <p>Cost in Tokens: <span id="costInTokens"></span></p>
+        <p>Cheaper Method: <span id="cheaperMethod"></span></p>
+    </div>
+</body>
+</html>
